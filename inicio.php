@@ -25,7 +25,7 @@
     ?>
 
     <?php
-    require('src/component/like-offcanvas.php');
+    require('src/component/carrousel-main.php');
     ?>
 
     <?php
