@@ -11,7 +11,9 @@
 </head>
 
 <body>
-
+    <?php
+    require('src/component/navbar.php');
+    ?>
 </body>
 
 </html>
