@@ -14,6 +14,9 @@
     <?php
     require('src/component/navbar.php');
     ?>
+    <?php
+    require('src/component/jquery-bootstrap.php');
+    ?>
 </body>
 
 </html>
