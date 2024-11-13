@@ -1,0 +1,12 @@
+# Ignorar archivos temporales del sistema operativo
+*.log
+*.tmp
+
+# Ignorar carpetas de dependencias
+vendor/
+
+# Ignorar archivos de configuración personal
+.env
+
+# Ignorar carpetas de compilación o generación
+images/
