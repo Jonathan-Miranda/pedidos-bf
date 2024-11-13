@@ -8,6 +8,7 @@
     <?php
     require('src/component/bootstrap.php');
     ?>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 
 <body>
@@ -26,10 +27,11 @@
     <?php
     require('src/component/like-offcanvas.php');
     ?>
-    
+
     <?php
     require('src/component/jquery-bootstrap.php');
     ?>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
 
 </html>
