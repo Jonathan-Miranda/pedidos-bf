@@ -14,12 +14,19 @@
     <?php
     require('src/component/navbar.php');
     ?>
+
     <?php
     require('src/component/car-offcanvas.php');
     ?>
+
     <?php
     require('src/component/like-offcanvas.php');
     ?>
+
+    <?php
+    require('src/component/like-offcanvas.php');
+    ?>
+    
     <?php
     require('src/component/jquery-bootstrap.php');
     ?>
