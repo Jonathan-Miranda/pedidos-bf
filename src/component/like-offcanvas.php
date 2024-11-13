@@ -6,7 +6,7 @@
      </div>
      <div class="offcanvas-body">
          <div class="text-center">
-             <img src="favorito-vacio.svg" width="80px" height="auto" class="img-fluid d-block m-auto" alt="Sin favoritos">
+             <img src="../../images/favorito-vacio.svg" width="80px" height="auto" class="img-fluid d-block m-auto" alt="Sin favoritos">
              <p class="fs-2 focus">Aun no tienes favoritos</p>
              <p>-¡Pss! los mejores son los de casa.😉</p>
          </div>

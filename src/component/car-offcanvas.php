@@ -6,7 +6,7 @@
         </div>
         <div class="offcanvas-body">
             <div class="text-center">
-                <img src="carrito-vacio.svg" class="img-fluid d-block m-auto" alt="Carrito vacio">
+                <img src="../../images/carrito-vacio.svg" class="img-fluid d-block m-auto" alt="Carrito vacio">
                 <p class="fs-2 focus">Carrito vacío</p>
                 <p>Agrega productos</p>
             </div>
