@@ -15,6 +15,9 @@
     require('src/component/navbar.php');
     ?>
     <?php
+    require('src/component/car-offcanvas.php');
+    ?>
+    <?php
     require('src/component/jquery-bootstrap.php');
     ?>
 </body>
