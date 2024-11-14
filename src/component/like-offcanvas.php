@@ -1,3 +1,6 @@
+<?php
+$base_url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . "/catalogo/";
+?>
  <!-- like -->
  <div class="offcanvas offcanvas-end" tabindex="-1" id="like" aria-labelledby="offcanvasRightLabel">
      <div class="offcanvas-header">
@@ -6,7 +9,7 @@
      </div>
      <div class="offcanvas-body">
          <div class="text-center">
-             <img src="../../images/favorito-vacio.svg" width="80px" height="auto" class="img-fluid d-block m-auto" alt="Sin favoritos">
+             <img src="<?php echo $base_url; ?>images/favorito-vacio.svg" width="80px" height="auto" class="img-fluid d-block m-auto" alt="Sin favoritos">
              <p class="fs-2 focus">Aun no tienes favoritos</p>
              <p>-¡Pss! los mejores son los de casa.😉</p>
          </div>

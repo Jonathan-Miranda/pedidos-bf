@@ -1,3 +1,6 @@
+<?php
+$base_url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . "/catalogo/";
+?>
     <!-- shop car -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="shop" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
@@ -6,7 +9,7 @@
         </div>
         <div class="offcanvas-body">
             <div class="text-center">
-                <img src="../../images/carrito-vacio.svg" class="img-fluid d-block m-auto" alt="Carrito vacio">
+                <img src="<?php echo $base_url; ?>images/carrito-vacio.svg" class="img-fluid d-block m-auto" alt="Carrito vacio">
                 <p class="fs-2 focus">Carrito vacío</p>
                 <p>Agrega productos</p>
             </div>
