@@ -18,7 +18,7 @@
                     <div class="swiper-slide">
                         <div>
 
-                            <img src="slide1.webp" class="radio card-img" alt="...">
+                            <img src="images/slide1.webp" class="radio card-img" alt="...">
                             <div class="card-img-overlay align-self-end p-3 blur">
                                 <p class="fs-3 focus">Nombre categoria</p>
                                 <p class="">Lorem ipsum dolor sit amet</p>
@@ -36,7 +36,7 @@
 
                     <div class="swiper-slide">
                         <div>
-                            <img src="slide2.webp" class="radio card-img" alt="...">
+                            <img src="images/slide2.webp" class="radio card-img" alt="...">
                             <div class="card-img-overlay align-self-end p-3 blur">
                                 <p class="fs-3 focus">Nombre categoria</p>
                                 <p class="">Lorem ipsum dolor sit amet</p>
@@ -53,7 +53,7 @@
 
                     <div class="swiper-slide">
                         <div>
-                            <img src="slide3.webp" class="radio card-img" alt="...">
+                            <img src="images/slide3.webp" class="radio card-img" alt="...">
                             <div class="card-img-overlay align-self-end p-3 blur">
                                 <p class="fs-3 focus">Nombre categoria</p>
                                 <p class="">Lorem ipsum dolor sit amet</p>
@@ -70,7 +70,7 @@
 
                     <div class="swiper-slide">
                         <div>
-                            <img src="slide1.webp" class="radio card-img" alt="...">
+                            <img src="images/slide1.webp" class="radio card-img" alt="...">
                             <div class="card-img-overlay align-self-end p-3 blur">
                                 <p class="fs-3 focus">Nombre categoria</p>
                                 <p class="">Lorem ipsum dolor sit amet</p>
@@ -87,7 +87,7 @@
 
                     <div class="swiper-slide">
                         <div>
-                            <img src="slide2.webp" class="radio card-img" alt="...">
+                            <img src="images/slide2.webp" class="radio card-img" alt="...">
                             <div class="card-img-overlay align-self-end p-3 blur">
                                 <p class="fs-3 focus">Nombre categoria</p>
                                 <p class="">Lorem ipsum dolor sit amet</p>
@@ -104,7 +104,7 @@
 
                     <div class="swiper-slide">
                         <div>
-                            <img src="slide3.webp" class="radio card-img" alt="...">
+                            <img src="images/slide3.webp" class="radio card-img" alt="...">
                             <div class="card-img-overlay align-self-end p-3 blur">
                                 <p class="fs-3 focus">Nombre categoria</p>
                                 <p class="">Lorem ipsum dolor sit amet</p>
