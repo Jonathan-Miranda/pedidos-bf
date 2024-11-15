@@ -1,9 +1,9 @@
--- phpMyAdmin SQL Dump
+-- phpMyAdmin SQL Dump JM
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2024 a las 01:03:59
+-- Tiempo de generación: 15-11-2024 a las 22:36:38
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -125,7 +125,7 @@ CREATE TABLE `pedido_product` (
 CREATE TABLE `precio_product` (
   `ID` int(100) NOT NULL,
   `ID_PRODUCT` int(100) NOT NULL,
-  `TIPO_USER` int(5) NOT NULL,
+  `ID_TIPO_USER` int(100) NOT NULL,
   `PRECIO` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -162,6 +162,17 @@ CREATE TABLE `product_category` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tipo_user`
+--
+
+CREATE TABLE `tipo_user` (
+  `ID` int(100) NOT NULL,
+  `NOMBRE` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `user`
 --
 
@@ -172,7 +183,7 @@ CREATE TABLE `user` (
   `CORREO` varchar(200) NOT NULL,
   `TELEFONO` varchar(20) NOT NULL,
   `NUMERO_CLIENTE` int(100) NOT NULL,
-  `TIPO_CLIENTE` int(5) NOT NULL,
+  `ID_TIPO_USER` int(100) NOT NULL,
   `RESET_PW` int(1) NOT NULL DEFAULT 0,
   `CREATE_PW` int(1) NOT NULL DEFAULT 0,
   `PW` text NOT NULL
@@ -248,7 +259,8 @@ ALTER TABLE `pedido_product`
 --
 ALTER TABLE `precio_product`
   ADD PRIMARY KEY (`ID`),
-  ADD KEY `ID_PRODUCT` (`ID_PRODUCT`);
+  ADD KEY `ID_PRODUCT` (`ID_PRODUCT`),
+  ADD KEY `FK_TIPO_USER` (`ID_TIPO_USER`);
 
 --
 -- Indices de la tabla `product`
@@ -264,10 +276,17 @@ ALTER TABLE `product_category`
   ADD KEY `ID_CATEGORY` (`ID_CATEGORY`);
 
 --
+-- Indices de la tabla `tipo_user`
+--
+ALTER TABLE `tipo_user`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indices de la tabla `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `FK_TIPO_CLIENTE` (`ID_TIPO_USER`);
 
 --
 -- Indices de la tabla `wish_list`
@@ -336,6 +355,12 @@ ALTER TABLE `product`
   MODIFY `ID` int(100) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `tipo_user`
+--
+ALTER TABLE `tipo_user`
+  MODIFY `ID` int(100) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
@@ -387,6 +412,7 @@ ALTER TABLE `pedido_product`
 -- Filtros para la tabla `precio_product`
 --
 ALTER TABLE `precio_product`
+  ADD CONSTRAINT `FK_TIPO_USER` FOREIGN KEY (`ID_TIPO_USER`) REFERENCES `tipo_user` (`ID`),
   ADD CONSTRAINT `precio_product_ibfk_1` FOREIGN KEY (`ID_PRODUCT`) REFERENCES `product` (`ID`) ON DELETE CASCADE;
 
 --
@@ -395,6 +421,12 @@ ALTER TABLE `precio_product`
 ALTER TABLE `product_category`
   ADD CONSTRAINT `product_category_ibfk_1` FOREIGN KEY (`ID_PRODUCT`) REFERENCES `product` (`ID`) ON DELETE CASCADE,
   ADD CONSTRAINT `product_category_ibfk_2` FOREIGN KEY (`ID_CATEGORY`) REFERENCES `category` (`ID`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `FK_TIPO_CLIENTE` FOREIGN KEY (`ID_TIPO_USER`) REFERENCES `tipo_user` (`ID`);
 
 --
 -- Filtros para la tabla `wish_list`
