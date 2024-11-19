@@ -21,20 +21,37 @@
                         <h1 class="text-center focus">INICIA SESIÓN</h1>
                         <p class="text-center">Nos alegra tenerte de vuelta</p>
 
-                        <form>
+                        <form id="frm-login" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label focus g-text">Email</label>
-                                <input type="email" class="form-control rounded-pill" placeholder="ejemplo@brudifarma.com.mx">
+                                <label for="email" class="form-label focus g-text">Email</label>
+                                <input type="email" id="email" name="email" class="form-control rounded-pill" placeholder="ejemplo@brudifarma.com.mx" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="exampleInputPassword1" class="form-label focus g-text">Contraseña</label>
-                                <input type="password" class="form-control rounded-pill" placeholder="Contraseña">
+                            <div class="p mb-3">
+                                <label for="pw" class="form-label focus g-text">Contraseña</label>
+                                <input type="password" id="pw" name="pw" class="form-control rounded-pill" placeholder="Contraseña">
                             </div>
+
+                            <div class="p-2">
+                                <p>Para mejorar tu seguridad y la de tus datos, te invitamos a crear una contraseña, la cual utilizaras para poder iniciar sesion en el futuro</p>
+                                <div class="col-md-12">
+                                    <div class="form-floating mt-3">
+                                        <input type="password" class="form-control" id="pw-nw" name="pw-nw" placeholder="Contraseña">
+                                        <label for="pw-nw">Contraseña</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-floating mt-3">
+                                        <input type="password" class="form-control" id="pw-nw2" name="pw-nw2" placeholder="Contraseña">
+                                        <label for="pw-nw2">Confirma contraseña</label>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="d-grid">
                                 <button type="submit" class="btn rounded-pill btn-danger">Ingresar</button>
                             </div>
                         </form>
-                        <p class="focus mt-3">-Olvidaste tu contraseña🥺? <a href="#" class="text-decoration-none">recuperala aqui 🥳</a></p>
+                        <p class="fgt focus mt-3">-Olvidaste tu contraseña🥺? <a href="#" class="text-decoration-none">recuperala aqui 🥳</a></p>
                     </div>
                 </div>
             </div>
@@ -50,6 +67,10 @@
             </div>
         </div>
     </div>
+    <?php
+    require('src/component/jquery-bootstrap.php');
+    ?>
+
 </body>
 
 </html>
