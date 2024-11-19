@@ -71,22 +71,30 @@ if ($dt == 1) {
 } else if ($dt == 2) {
 
     $email = (isset($_POST['email'])) ? $_POST['email'] : '';
-    $password = (isset($_POST['pwl'])) ? md5($_POST['pwl']) : '';
+    $password = (isset($_POST['pwl'])) ? $_POST['pwl'] : '';
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-        $consulta = "SELECT ID,NOMBRE FROM user WHERE CORREO='$email' AND PW= '$password' ";
+        //$consulta = "SELECT ID,NOMBRE FROM user WHERE CORREO='$email' AND PW= '$password' ";
+        $consulta = "SELECT ID,NOMBRE,PW FROM user WHERE CORREO = ? ";
         $resultado = $con->prepare($consulta);
+        $resultado-> bind_param("s",$email);
         $resultado->execute();
 
 
         if ($resultado->rowCount() >= 1) {
-            $data = $resultado->fetch();
+            $data = $resultado->fetch(PDO::FETCH_ASSOC);
 
-            $_SESSION["id"] = $data[0];
-            $_SESSION["s_usuario"] = $data[1];
+            if (password_verify($password, $data[PW])) {
+                $_SESSION["id"] = $data[ID];
+                $_SESSION["s_usuario"] = $data[NOMBRE];
+    
+                $data2 = 2;//agregar alerta de pw incorrecta
+            } else{
+                $_SESSION["s_usuario"] = null;
+                $data2 = null;
+            }
 
-            $data2 = 2;
         } else {
             $_SESSION["s_usuario"] = null;
             $data2 = null;
@@ -100,7 +108,7 @@ if ($dt == 1) {
     }
 } else if ($dt == 3) {
     $email = (isset($_POST['email'])) ? $_POST['email'] : '';
-    $password = (isset($_POST['pwl'])) ? md5($_POST['pwl']) : '';
+    $password = (isset($_POST['pwl'])) ? password_hash($_POST['pwl'], PASSWORD_DEFAULT) : '';
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
