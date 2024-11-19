@@ -70,6 +70,10 @@
     <?php
     require('src/component/jquery-bootstrap.php');
     ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <?php
+    require('js/login.php');
+    ?>
 
 </body>
 
