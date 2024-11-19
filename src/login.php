@@ -1,13 +1,22 @@
 <?php
 session_start();
 
+//Variables de entorno{
+
 require __DIR__ . '/../vendor/autoload.php';
+
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../connection');
 $dotenv->load();
 
+//}Fin variables de entorno
 
+$email = (isset($_POST['email'])) ? $_POST['email'] : '';
+$password = (isset($_POST['pwl'])) ? $_POST['pwl'] : '';
+$dt = (isset($_POST['dt'])) ? $_POST['dt'] : '';
+
+//Establecer coneccion -> DB{
 class Conexion
 {
     public static function Conectar()
@@ -29,101 +38,162 @@ class Conexion
 $objeto = new Conexion();
 $con = $objeto->Conectar();
 
-//recepción de datos enviados mediante POST desde ajax
-// 1) crear pw 1era ves
-// 2) inicio sesion
-// 3) guarda que es usuario creo pw
-$dt = (isset($_POST['dt'])) ? $_POST['dt'] : '';
+//}End establecer coneccion -> DB
 
-if ($dt == 1) {
+//Funciones{
 
-    $email = (isset($_POST['email'])) ? $_POST['email'] : '';
+function verificarCorreo($email)
+{
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
-        $consulta = "SELECT NOMBRE FROM user WHERE CORREO='$email' AND CREATE_PW = '0' ";
-        $resultado = $con->prepare($consulta);
-        $resultado->execute();
-
-
-        if ($resultado->rowCount() >= 1) {
-            $data2 = 3;
-        } else {
-
-            $consulta2 = "SELECT NOMBRE FROM user WHERE CORREO='$email' AND CREATE_PW = '1' ";
-            $resultado2 = $con->prepare($consulta2);
-            $resultado2->execute();
-
-            if ($resultado2->rowCount() >= 1) {
-                $data2 = 4;
-            }else {
-                $data2 = null;
-            }
-
-        }
-
-        print json_encode($data2);
-        $con = null;
+        $verificarCorreoResponse = true;
     } else {
-        print json_encode(null);
-        $con = null;
+        $verificarCorreoResponse = false;
     }
-} else if ($dt == 2) {
 
-    $email = (isset($_POST['email'])) ? $_POST['email'] : '';
-    $password = (isset($_POST['pwl'])) ? $_POST['pwl'] : '';
-
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
-        //$consulta = "SELECT ID,NOMBRE FROM user WHERE CORREO='$email' AND PW= '$password' ";
-        $consulta = "SELECT ID,NOMBRE,PW FROM user WHERE CORREO = ? ";
-        $resultado = $con->prepare($consulta);
-        $resultado-> bind_param("s",$email);
-        $resultado->execute();
-
-
-        if ($resultado->rowCount() >= 1) {
-            $data = $resultado->fetch(PDO::FETCH_ASSOC);
-
-            if (password_verify($password, $data[PW])) {
-                $_SESSION["id"] = $data[ID];
-                $_SESSION["s_usuario"] = $data[NOMBRE];
-    
-                $data2 = 2;//agregar alerta de pw incorrecta
-            } else{
-                $_SESSION["s_usuario"] = null;
-                $data2 = null;
-            }
-
-        } else {
-            $_SESSION["s_usuario"] = null;
-            $data2 = null;
-        }
-
-        print json_encode($data2);
-        $con = null;
-    } else {
-        print json_encode(null);
-        $con = null;
-    }
-} else if ($dt == 3) {
-    $email = (isset($_POST['email'])) ? $_POST['email'] : '';
-    $password = (isset($_POST['pwl'])) ? password_hash($_POST['pwl'], PASSWORD_DEFAULT) : '';
-
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
-        $consulta = "UPDATE user SET PW ='$password', C_PW = 1 WHERE CORREO='$email'";
-        $resultado = $con->prepare($consulta);
-
-        if ($resultado->execute()) {
-            $data2 = 5;
-        } else {
-            $data2 = null;
-        }
-        print json_encode($data2);
-        $con = null;
-    } else {
-        print json_encode(null);
-        $con = null;
-    }
+    return $verificarCorreoResponse;
 }
+
+// ==========================================================
+
+function verUsuarioPwOK($email, $con)
+{
+
+    $consulta = "SELECT NOMBRE FROM user WHERE CORREO = :correo AND CREATE_PW = '0'";
+    $resultado = $con->prepare($consulta);
+    $resultado->bindParam(':correo', $email, PDO::PARAM_STR);
+    $resultado->execute();
+
+    if ($resultado->rowCount() >= 1) {
+        $icon = "warning";
+        $msj = "El usuario existe pero no ha creado pw";
+        $status = true;
+    } else {
+        $icon = "error";
+        $msj = "EL usuario no existe :(";
+        $status = false;
+    }
+    return [
+        'icon' => $icon,
+        'msj' => $msj,
+        'status' => $status
+    ];
+}
+
+// ==========================================================
+
+function usuarioCreaPw($email, $password, $con)
+{
+    $pwhas = password_hash($password, PASSWORD_DEFAULT);
+
+    $consulta = "UPDATE user SET PW = :password, CREATE_PW = 1 WHERE CORREO = :correo";
+    $resultado = $con->prepare($consulta);
+
+    // Asignamos los valores de los parámetros
+    $resultado->bindParam(':password', $pwhas, PDO::PARAM_STR);
+    $resultado->bindParam(':correo', $email, PDO::PARAM_STR);
+
+    // Ejecutamos la consulta
+    if ($resultado->execute()) {
+
+        $icon = "success";
+        $msj = "Contraseña creada correctamente";
+        $status = true;
+    } else {
+        // Acción si la actualización falló
+        $icon = "error";
+        $msj = "No se guardo su contraseña";
+        $status = false;
+    }
+    return [
+        'icon' => $icon,
+        'msj' => $msj,
+        'status' => $status
+    ];
+}
+
+// ==========================================================
+
+function loginUsuario($email, $password, $con)
+{
+    $consulta = "SELECT ID,NOMBRE,PW FROM user WHERE CORREO = ? ";
+    $resultado = $con->prepare($consulta);
+    $resultado->bind_param("s", $email);
+    $resultado->execute();
+    if ($resultado->rowCount() >= 1) {
+        $data = $resultado->fetch(PDO::FETCH_ASSOC);
+
+        if (password_verify($password, $data['PW'])) {
+
+            $_SESSION["id"] = $data['ID'];
+            $_SESSION["s_usuario"] = $data['NOMBRE'];
+
+            $icon = "success";
+            $msj = "Bienvenido";
+            $status = true;
+        } else {
+
+            $_SESSION["s_usuario"] = null;
+            $icon = "warning";
+            $msj = "Contraseña incorrecta";
+            $status = false;
+        }
+    } else {
+
+        $_SESSION["s_usuario"] = null;
+        $icon = "error";
+        $msj = "No existe este usuario, verifique sus datos";
+        $status = false;
+    }
+
+    return [
+        'icon' => $icon,
+        'msj' => $msj,
+        'status' => $status
+    ];
+}
+
+//}End funciones
+
+// ================================================================
+
+//funcion principal
+
+function main($email, $password, $con) {
+    
+    if (verificarCorreo($email)) {
+        $response = verUsuarioPwOK($email, $con);
+
+        if ($response['status']) {
+            $response_Crearpw = usuarioCreaPw($email, $password, $con);
+
+            $icon = $response_Crearpw['icon'];
+            $msj = $response_Crearpw['msj'];
+            $status = $response_Crearpw['status'];
+        } else {
+            $response_login = loginUsuario($email, $password, $con);
+
+            $icon = $response_login['icon'];
+            $msj = $response_login['msj'];
+            $status = $response_login['status'];
+        }
+
+    } else {
+        $icon = "warning";
+        $msj = "Coloque una direccion de correo valida";
+        $status = false;
+    }
+
+    return [
+        'icon' => $icon,
+        'msj' => $msj,
+        'status' => $status
+    ];
+}
+
+//end funcion pricipal
+
+$datos = main($email, $password, $con);
+
+print json_encode($data2);
+$con = null;
