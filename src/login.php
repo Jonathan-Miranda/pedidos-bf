@@ -116,9 +116,9 @@ function usuarioCreaPw($email, $password, $con)
 
 function loginUsuario($email, $password, $con)
 {
-    $consulta = "SELECT ID,NOMBRE,PW FROM user WHERE CORREO = ? ";
+    $consulta = "SELECT ID,NOMBRE,PW FROM user WHERE CORREO = :correo ";
     $resultado = $con->prepare($consulta);
-    $resultado->bind_param("s", $email);
+    $resultado->bindParam(':correo', $email, PDO::PARAM_STR);
     $resultado->execute();
     if ($resultado->rowCount() >= 1) {
         $data = $resultado->fetch(PDO::FETCH_ASSOC);
