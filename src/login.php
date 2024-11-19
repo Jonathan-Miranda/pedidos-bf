@@ -160,7 +160,7 @@ function loginUsuario($email, $password, $con)
 //funcion principal
 
 function main($email, $password, $con) {
-    
+
     if (verificarCorreo($email)) {
         $response = verUsuarioPwOK($email, $con);
 
@@ -195,5 +195,5 @@ function main($email, $password, $con) {
 
 $datos = main($email, $password, $con);
 
-print json_encode($data2);
+print json_encode($datos);
 $con = null;
