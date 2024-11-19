@@ -8,7 +8,7 @@
         e.preventDefault();
         var email = $.trim($("#email").val());
         $.ajax({
-            url: "sources/login.php",
+            url: "src/login.php",
             type: "POST",
             datatype: "json",
             data: {
@@ -42,7 +42,7 @@
                             var email = $.trim($("#email").val());
                             var pwl_2 = $.trim($("#pw-nw").val());
                             $.ajax({
-                                url: "sources/login.php",
+                                url: "src/login.php",
                                 type: "POST",
                                 datatype: "json",
                                 data: {
@@ -75,7 +75,7 @@
                         var email = $.trim($("#email").val());
                         var pwl = $.trim($("#pwl").val());
                         $.ajax({
-                            url: "sources/login.php",
+                            url: "src/login.php",
                             type: "POST",
                             datatype: "json",
                             data: {
