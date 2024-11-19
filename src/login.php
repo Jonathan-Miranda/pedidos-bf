@@ -14,6 +14,7 @@ $dotenv->load();
 
 $email = (isset($_POST['email'])) ? $_POST['email'] : '';
 $password = (isset($_POST['pwl'])) ? $_POST['pwl'] : '';
+$pwl_2 = (isset($_POST['pwl_2'])) ? $_POST['pwl_2'] : '';
 $dt = (isset($_POST['dt'])) ? $_POST['dt'] : '';
 
 //Establecer coneccion -> DB{
@@ -82,9 +83,9 @@ function verUsuarioPwOK($email, $con)
 
 // ==========================================================
 
-function usuarioCreaPw($email, $password, $con)
+function usuarioCreaPw($email, $pwl_2, $con)
 {
-    $pwhas = password_hash($password, PASSWORD_DEFAULT);
+    $pwhas = password_hash($pwl_2, PASSWORD_DEFAULT);
 
     $consulta = "UPDATE user SET PW = :password, CREATE_PW = 1 WHERE CORREO = :correo";
     $resultado = $con->prepare($consulta);
@@ -159,41 +160,28 @@ function loginUsuario($email, $password, $con)
 
 //funcion principal
 
-function main($email, $password, $con) {
+if (verificarCorreo($email)) {
 
-    if (verificarCorreo($email)) {
+    if ($dt == 1) {
         $response = verUsuarioPwOK($email, $con);
-
-        if ($response['status']) {
-            $response_Crearpw = usuarioCreaPw($email, $password, $con);
-
-            $icon = $response_Crearpw['icon'];
-            $msj = $response_Crearpw['msj'];
-            $status = $response_Crearpw['status'];
-        } else {
-            $response_login = loginUsuario($email, $password, $con);
-
-            $icon = $response_login['icon'];
-            $msj = $response_login['msj'];
-            $status = $response_login['status'];
-        }
-
-    } else {
-        $icon = "warning";
-        $msj = "Coloque una direccion de correo valida";
-        $status = false;
+    } elseif ($dt == 2) {
+        $response = usuarioCreaPw($email, $pwl_2, $con);
+    } elseif ($dt == 3) {
+        $response = loginUsuario($email, $password, $con);
     }
 
-    return [
-        'icon' => $icon,
-        'msj' => $msj,
-        'status' => $status
+} else {
+
+    $response = [
+        'icon' => 'warning',
+        'msj' => 'Coloque una direccion de correo valida',
+        'status' => false,
     ];
 }
 
 //end funcion pricipal
 
-$datos = main($email, $password, $con);
 
-print json_encode($datos);
+
+print json_encode($response);
 $con = null;
