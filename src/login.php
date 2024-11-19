@@ -30,6 +30,9 @@ $objeto = new Conexion();
 $con = $objeto->Conectar();
 
 //recepción de datos enviados mediante POST desde ajax
+// 1) crear pw 1era ves
+// 2) inicio sesion
+// 3) guarda que es usuario creo pw
 $dt = (isset($_POST['dt'])) ? $_POST['dt'] : '';
 
 if ($dt == 1) {
@@ -38,17 +41,16 @@ if ($dt == 1) {
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-        $consulta = "SELECT NAME FROM user WHERE EMAIL='$email' AND C_PW = '0' ";
+        $consulta = "SELECT NOMBRE FROM user WHERE CORREO='$email' AND CREATE_PW = '0' ";
         $resultado = $con->prepare($consulta);
         $resultado->execute();
 
 
         if ($resultado->rowCount() >= 1) {
-
             $data2 = 3;
         } else {
 
-            $consulta2 = "SELECT NAME FROM user WHERE EMAIL='$email' AND C_PW = '1' ";
+            $consulta2 = "SELECT NOMBRE FROM user WHERE CORREO='$email' AND CREATE_PW = '1' ";
             $resultado2 = $con->prepare($consulta2);
             $resultado2->execute();
 
@@ -73,7 +75,7 @@ if ($dt == 1) {
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-        $consulta = "SELECT ID,NAME FROM user WHERE EMAIL='$email' AND PW= '$password' ";
+        $consulta = "SELECT ID,NOMBRE FROM user WHERE CORREO='$email' AND PW= '$password' ";
         $resultado = $con->prepare($consulta);
         $resultado->execute();
 
@@ -102,7 +104,7 @@ if ($dt == 1) {
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
-        $consulta = "UPDATE user SET PW ='$password', C_PW = 1 WHERE EMAIL='$email'";
+        $consulta = "UPDATE user SET PW ='$password', C_PW = 1 WHERE CORREO='$email'";
         $resultado = $con->prepare($consulta);
 
         if ($resultado->execute()) {

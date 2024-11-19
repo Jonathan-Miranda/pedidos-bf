@@ -19,7 +19,7 @@
                 if (data == "null") {
                     Swal.fire({
                         icon: 'error',
-                        title: 'No existe este usuario, intenta nuevamente o registrate',
+                        title: 'No existe este usuario, Intenta nuevamente',
                     });
                 } else if (data == 3) {
                     pp.show();
