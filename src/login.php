@@ -1,14 +1,21 @@
 <?php
 session_start();
 
+require __DIR__ . '/../vendor/autoload.php';
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../connection');
+$dotenv->load();
+
+
 class Conexion
 {
     public static function Conectar()
     {
-        define('servidor', 'localhost');
-        define('nombre_bd', 'farnanegocio');
-        define('usuario', 'root');
-        define('password', '');
+        define('servidor', $_ENV['DB_HOST']);
+        define('nombre_bd', $_ENV['BD_NAME']);
+        define('usuario', $_ENV['DB_USER']);
+        define('password', $_ENV['DB_PASSWORD']);
         $opciones = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
         try {
             $con = new PDO("mysql:host=" . servidor . "; dbname=" . nombre_bd, usuario, password, $opciones);
