@@ -45,7 +45,7 @@
                                 <button type="submit" class="btn rounded-pill btn-danger">Ingresar</button>
                             </div>
                         </form>
-                        <p class="fgt focus mt-3">-Olvidaste tu contraseña🥺? <a href="#" class="text-decoration-none">recuperala aqui 🥳</a></p>
+                        <p class="fgt focus mt-3">-Olvidaste tu contraseña🥺? <a href="src/respw.php" class="text-decoration-none">recuperala aqui 🥳</a></p>
                     </div>
                 </div>
             </div>
