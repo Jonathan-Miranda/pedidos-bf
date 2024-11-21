@@ -92,6 +92,8 @@
                                             Swal.fire({
                                                 icon: thirdResponse.icon,
                                                 title: thirdResponse.msj,
+                                            }).then(() => {
+                                                window.location.href = "catalogo.php";
                                             });
                                         } else {
                                             Swal.fire({
