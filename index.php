@@ -39,12 +39,6 @@
                                         <label for="pw-nw">Contraseña</label>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="form-floating mt-3">
-                                        <input type="password" class="form-control" id="pw-nw2" name="pw-nw2" placeholder="Contraseña">
-                                        <label for="pw-nw2">Confirma contraseña</label>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="d-grid">
