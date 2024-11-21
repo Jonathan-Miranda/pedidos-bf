@@ -2,11 +2,33 @@
 session_start();
 if (isset($_SESSION['admin-us'])) {
     require('../connection/conexion.php');
-    echo $_SESSION["admin-us"] . "-" . $_SESSION["admin-id"];
     ?>
 
-    <br>
-    <a href="src/destroy.php">Cerrar sesión</a>
+    <!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Administrador | Brudifarma</title>
+        <?php
+        require('../src/component/bootstrap.php');
+        ?>
+    </head>
+
+    <body>
+        <?php
+        require('src/navbar.php');
+        ?>
+
+        <?php
+        require('../src/component/jquery-bootstrap.php');
+        ?>
+
+    </body>
+
+    </html>
+
     <?php
 } else {
     header("Location: index.php");
