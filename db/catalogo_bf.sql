@@ -1,9 +1,9 @@
--- phpMyAdmin SQL Dump JM
+-- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-11-2024 a las 22:36:38
+-- Tiempo de generación: 22-11-2024 a las 00:49:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -34,6 +34,13 @@ CREATE TABLE `admin` (
   `PW` text NOT NULL,
   `ROLL` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `admin`
+--
+
+INSERT INTO `admin` (`ID`, `NOMBRE`, `CORREO`, `PW`, `ROLL`) VALUES
+(1, 'Jonathan', 'jonathan@admin.com', '$2y$10$7GJc.mlxzJcIul8FBijcmuKrgZMOm0eAcZBU6Z2tCogLUyacVlcmG', 1);
 
 -- --------------------------------------------------------
 
@@ -167,8 +174,20 @@ CREATE TABLE `product_category` (
 
 CREATE TABLE `tipo_user` (
   `ID` int(100) NOT NULL,
-  `NOMBRE` varchar(100) NOT NULL
+  `NOMBRE` varchar(100) NOT NULL,
+  `DESCRIPCION` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tipo_user`
+--
+
+INSERT INTO `tipo_user` (`ID`, `NOMBRE`, `DESCRIPCION`) VALUES
+(1, '23', 'Clientes de casa'),
+(2, '11', 'Clientes oro'),
+(3, '18', 'Clientes plata'),
+(4, '36', 'Clientes diamante'),
+(6, '53', 'Clientes perla');
 
 -- --------------------------------------------------------
 
@@ -186,8 +205,17 @@ CREATE TABLE `user` (
   `ID_TIPO_USER` int(100) NOT NULL,
   `RESET_PW` int(1) NOT NULL DEFAULT 0,
   `CREATE_PW` int(1) NOT NULL DEFAULT 0,
-  `PW` text NOT NULL
+  `PW` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `user`
+--
+
+INSERT INTO `user` (`ID`, `NOMBRE`, `APELLIDO`, `CORREO`, `TELEFONO`, `NUMERO_CLIENTE`, `ID_TIPO_USER`, `RESET_PW`, `CREATE_PW`, `PW`) VALUES
+(1, 'Jonathan', 'Miranda', 'jonathan.miranda@brudifarma.com.mx', '5524063165', 1234, 1, 0, 1, '$2y$10$cdZPCkRglBa2Kgwneok8N.qAF4MKbeCUaKxti0JtBA1MEH5tJ8.GG'),
+(2, 'fabian', 'ramirez', 'fabian@correo.com', '5524063165', 4321, 6, 0, 0, NULL),
+(3, 'Gael', 'abad', 'gael@correo.com', '5524027419', 7531, 2, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -304,7 +332,7 @@ ALTER TABLE `wish_list`
 -- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `ID` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `car`
@@ -358,13 +386,13 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT de la tabla `tipo_user`
 --
 ALTER TABLE `tipo_user`
-  MODIFY `ID` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `ID` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `wish_list`
