@@ -10,7 +10,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        <p class="focus my-2">¡Hola👋! User</p>
+                        <p class="focus my-2">¡Hola👋! <?php echo $_SESSION['s_usuario']."-".$_SESSION['id'];?></p>
                     </div>
 
                     <div class="col-md-6">
@@ -31,7 +31,7 @@
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="#"><i class="bi bi-bag"></i> Mis pedidos</a></li>
-                                    <li><a class="dropdown-item link-danger" href="#"><i class="bi bi-x-circle"></i> Cerrar sesión</a></li>
+                                    <li><a class="dropdown-item link-danger" href="src/destroy.php"><i class="bi bi-x-circle"></i> Cerrar sesión</a></li>
                                 </ul>
                             </div>
 
