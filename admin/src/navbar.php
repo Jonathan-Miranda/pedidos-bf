@@ -22,7 +22,7 @@
                                 <i class="bi bi-people-fill"></i> Tipos clientes
                             </a>
 
-                            <a class="btn btn-primary" href="#">
+                            <a class="btn btn-primary" href="user.php">
                                 <i class="bi bi-person-fill"></i> Usuarios
                             </a>
                             <a class="btn btn-primary" href="#">
