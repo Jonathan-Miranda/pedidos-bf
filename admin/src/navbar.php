@@ -18,7 +18,7 @@
                     <div class="col-md-9">
                         <div class="d-grid gap-2 d-md-block">
 
-                            <a class="btn btn-primary" href="#">
+                            <a class="btn btn-primary" href="tipo-cliente.php">
                                 <i class="bi bi-people-fill"></i> Tipos clientes
                             </a>
 
