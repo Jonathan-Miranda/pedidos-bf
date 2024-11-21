@@ -1,6 +1,7 @@
 # Ignorar archivos temporales del sistema operativo
 *.log
 *.tmp
+error_log
 
 # Ignorar carpetas de dependencias
 vendor/
