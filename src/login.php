@@ -13,8 +13,8 @@ $dotenv->load();
 //}Fin variables de entorno
 
 $email = (isset($_POST['email'])) ? $_POST['email'] : '';
-$password = (isset($_POST['pwl'])) ? $_POST['pwl'] : '';
-$pwl_2 = (isset($_POST['pwl_2'])) ? $_POST['pwl_2'] : '';
+$password = (isset($_POST['pw'])) ? $_POST['pw'] : '';
+$pwl_2 = (isset($_POST['pwl'])) ? $_POST['pwl'] : '';
 $dt = (isset($_POST['dt'])) ? $_POST['dt'] : '';
 
 //Establecer coneccion -> DB{
@@ -60,24 +60,39 @@ function verificarCorreo($email)
 function verUsuarioPwOK($email, $con)
 {
 
-    $consulta = "SELECT NOMBRE FROM user WHERE CORREO = :correo AND CREATE_PW = '0'";
+    $consulta = "SELECT CREATE_PW FROM user WHERE CORREO = :correo";
     $resultado = $con->prepare($consulta);
     $resultado->bindParam(':correo', $email, PDO::PARAM_STR);
     $resultado->execute();
 
     if ($resultado->rowCount() >= 1) {
-        $icon = "warning";
-        $msj = "El usuario existe pero no ha creado pw";
-        $status = true;
+        // Usamos fetch() para obtener la fila de resultados
+        $row = $resultado->fetch(PDO::FETCH_ASSOC); // Devuelve un array asociativo
+
+        // Accedemos al valor de CREATE_PW
+        if ($row['CREATE_PW'] == 0) {
+            $icon = "warning";
+            $msj = "El usuario existe pero no ha creado pw";
+            $status = true;
+            $process = 2;
+        } else {
+            $icon = "warning";
+            $msj = "El usuario ya tiene creada la pw";
+            $status = true;
+            $process = 3;
+        }
+
     } else {
         $icon = "error";
         $msj = "EL usuario no existe :(";
         $status = false;
+        $process = 0;
     }
     return [
         'icon' => $icon,
         'msj' => $msj,
-        'status' => $status
+        'status' => $status,
+        'process' => $process
     ];
 }
 
@@ -160,23 +175,37 @@ function loginUsuario($email, $password, $con)
 
 //funcion principal
 
-if (verificarCorreo($email)) {
+switch ($dt) {
+    case 1:
+        if (verificarCorreo($email)) {
 
-    if ($dt == 1) {
-        $response = verUsuarioPwOK($email, $con);
-    } elseif ($dt == 2) {
+            $response = verUsuarioPwOK($email, $con);
+
+        } else {
+
+            $response = [
+                'icon' => 'warning',
+                'msj' => 'Coloque una direccion de correo valida',
+                'status' => false,
+            ];
+        }
+        break;
+
+    case 2:
         $response = usuarioCreaPw($email, $pwl_2, $con);
-    } elseif ($dt == 3) {
+        break;
+
+    case 3:
         $response = loginUsuario($email, $password, $con);
-    }
+        break;
 
-} else {
-
-    $response = [
-        'icon' => 'warning',
-        'msj' => 'Coloque una direccion de correo valida',
-        'status' => false,
-    ];
+    default:
+        $response = [
+            'icon' => 'error',
+            'msj' => 'Ocurrio un error, vuelva a intentarlo más tarde',
+            'status' => false,
+        ];
+        break;
 }
 
 //end funcion pricipal
