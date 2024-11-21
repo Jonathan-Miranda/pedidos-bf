@@ -19,17 +19,17 @@
             },
             success: function (response) {
                 if (response.status) {
-                
+
                     switch (response.process) {
                         case 2:
-                
+
                             pp.show();
 
                             $("#pw-nw").attr("required", true);
                             $('#frm-login').off('submit');
                             var pwl_2 = $("#pw-nw").val();
 
-                            
+
                             $('#frm-login').submit(function (e) {
                                 e.preventDefault();
                                 var pwl_2 = $("#pw-nw").val();
@@ -44,11 +44,13 @@
                                         dt: 2
                                     },
                                     success: function (secondResponse) {
-   
+
                                         if (secondResponse.status) {
                                             Swal.fire({
                                                 icon: secondResponse.icon,
                                                 title: secondResponse.msj,
+                                            }).then(() => {
+                                                window.location.href = "index.php";
                                             });
                                         } else {
                                             Swal.fire({
@@ -66,7 +68,7 @@
 
                             p.show();
                             fgt.show();
-                            $("#pw").attr("required", true); 
+                            $("#pw").attr("required", true);
 
                             $('#frm-login').off('submit');
 
