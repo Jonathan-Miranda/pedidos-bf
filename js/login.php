@@ -4,108 +4,115 @@
     const p = $(".p").hide();
 
     // LOGIN
-    $('#frm-login').submit(function(e) {
+    $('#frm-login').submit(function (e) {
         e.preventDefault();
         var email = $.trim($("#email").val());
+
+        // Primer AJAX
         $.ajax({
             url: "src/login.php",
             type: "POST",
-            datatype: "json",
+            dataType: "json",
             data: {
                 email: email,
                 dt: 1
             },
-            success: function(data) {
-                if (dt == 1 && data.status) {
+            success: function (response) {
+                if (response.status) {
+                
+                    switch (response.process) {
+                        case 2:
+                
+                            pp.show();
 
-                    pp.show();
+                            $("#pw-nw").attr("required", true);
+                            $('#frm-login').off('submit');
+                            var pwl_2 = $("#pw-nw").val();
 
-                    $("#pw-nw").attr("required", true);
-                    $("#pw-nw2").attr("required", true);
-                    $('#frm-login').off('submit');
+                            
+                            $('#frm-login').submit(function (e) {
+                                e.preventDefault();
+                                var pwl_2 = $("#pw-nw").val();
 
-                    var pw_1 = $("#pw-nw").val();
-                    var pw_2 = $("#pw-nw2").val();
-
-                    if (pw_1 != pw_2) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Las contraseñas no coinciden',
-                        });
-
-                    } else {
-
-                        $('#frm-login').submit(function(e) {
-                            e.preventDefault();
-                            var email = $.trim($("#email").val());
-                            var pwl_2 = $.trim($("#pw-nw").val());
-                            $.ajax({
-                                url: "src/login.php",
-                                type: "POST",
-                                datatype: "json",
-                                data: {
-                                    email: email,
-                                    pwl: pwl_2,
-                                    dt: 2
-                                },
-                                success: function(data) {
-                                    if (dt == 2 && data.status) {
-                                        Swal.fire({
-                                            icon: data.icon,
-                                            title: data.msj,
-                                        });
-                                    } else {
-                                        Swal.fire({
-                                            icon: data.icon,
-                                            title: data.msj,
-                                        });
+                                $.ajax({
+                                    url: "src/login.php",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: {
+                                        email: email,
+                                        pwl: pwl_2,
+                                        dt: 2
+                                    },
+                                    success: function (secondResponse) {
+   
+                                        if (secondResponse.status) {
+                                            Swal.fire({
+                                                icon: secondResponse.icon,
+                                                title: secondResponse.msj,
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                icon: secondResponse.icon,
+                                                title: secondResponse.msj,
+                                            });
+                                        }
                                     }
-                                }
+                                });
                             });
-                        });
+
+                            break;
+
+                        case 3:
+
+                            p.show();
+                            fgt.show();
+                            $("#pw").attr("required", true); 
+
+                            $('#frm-login').off('submit');
+
+                            $('#frm-login').submit(function (e) {
+                                e.preventDefault();
+                                var email = $.trim($("#email").val());
+                                var pwl = $.trim($("#pw").val());
+
+                                $.ajax({
+                                    url: "src/login.php",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: {
+                                        email: email,
+                                        pw: pwl,
+                                        dt: 3
+                                    },
+                                    success: function (thirdResponse) {
+
+                                        if (thirdResponse.status) {
+                                            Swal.fire({
+                                                icon: thirdResponse.icon,
+                                                title: thirdResponse.msj,
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                icon: thirdResponse.icon,
+                                                title: thirdResponse.msj,
+                                            });
+                                        }
+                                    }
+                                });
+                            });
+                            break;
+
+                        default:
+                            break;
                     }
-                    
                 } else {
-                    p.show();
-                    fgt.show();
-                    $("#pwl").attr("required", true);
-                    $('#frm-login').off('submit');
-
-                    $('#frm-login').submit(function(e) {
-                        e.preventDefault();
-                        var email = $.trim($("#email").val());
-                        var pwl = $.trim($("#pwl").val());
-                        $.ajax({
-                            url: "src/login.php",
-                            type: "POST",
-                            datatype: "json",
-                            data: {
-                                email: email,
-                                pwl: pwl,
-                                dt: 3
-                            },
-                            success: function(data) {
-                                if (dt == 3 && data.status) {
-                                    Swal.fire({
-                                        icon: data.icon,
-                                        title: data.msj,
-                                    });
-                                } else {
-                                    Swal.fire("¡Hurra!", "Sesion iniciada correctamente", "success")
-                                        .then((value) => {
-                                            if (`${value}`) {
-                                                window.location.href = "catalogo.php";
-                                            }
-                                        });
-                                }
-                            }
-                        });
+                    Swal.fire({
+                        icon: response.icon,
+                        title: response.msj,
                     });
-
                 }
             }
         });
     });
-
     // FIN LOGIN
 </script>
