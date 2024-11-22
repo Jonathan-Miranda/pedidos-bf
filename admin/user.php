@@ -79,7 +79,8 @@ if (isset($_SESSION['admin-us'])) {
 
                                     <div class="mb-3">
                                         <label for="tipo-usuario" class="form-label focus">Tipo de usuario</label>
-                                        <select class="form-select" id="tipo-usuario" name="tipo-usuario" aria-label="Default select example">
+                                        <select class="form-select" id="tipo-usuario" name="tipo-usuario"
+                                            aria-label="Default select example">
                                             <?php
                                             $query_type = "SELECT ID,NOMBRE FROM tipo_user";
 
@@ -90,7 +91,8 @@ if (isset($_SESSION['admin-us'])) {
                                                     ?>
 
                                                     <option value="<?php echo $row_type['ID']; ?>">
-                                                        <?php echo $row_type['NOMBRE']; ?></option>
+                                                        <?php echo $row_type['NOMBRE']; ?>
+                                                    </option>
 
                                                     <?php
                                                 }
@@ -147,12 +149,12 @@ if (isset($_SESSION['admin-us'])) {
                                         <td><?php echo $row['TIPO_CLIENTE']; ?></td>
                                         <td>
                                             <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                                data-bs-target="#edit-user" data-bs-nombre="<?php echo $row['NOMBRE']; ?>"
+                                                data-bs-target="#edit-user" 
+                                                data-bs-nombre="<?php echo $row['NOMBRE']; ?>"
                                                 data-bs-apellido="<?php echo $row['APELLIDO']; ?>"
                                                 data-bs-correo="<?php echo $row['CORREO']; ?>"
                                                 data-bs-telefono="<?php echo $row['TELEFONO']; ?>"
                                                 data-bs-numero-cliente="<?php echo $row['NUMERO_CLIENTE']; ?>"
-                                                data-bs-tipo-cliente="<?php echo $row['TIPO_CLIENTE']; ?>"
                                                 data-bs-id="<?php echo $row['ID']; ?>">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
@@ -189,18 +191,60 @@ if (isset($_SESSION['admin-us'])) {
                                         </div>
 
                                         <div class="modal-body">
-                                            <form id="edit-client" method="POST" enctype="multipart/form-data"
+                                            <form id="frm-edit-user" method="POST" enctype="multipart/form-data"
                                                 accept-charset="utf-8">
                                                 <div class="mb-3">
                                                     <label for="edit-name" class="col-form-label focus">Nombre:</label>
-                                                    <input type="text" class="form-control" id="edit-name">
+                                                    <input type="text" class="form-control" id="edit-name" name="edit-name">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="edit-descripcion"
-                                                        class="col-form-label focus">Descripción:</label>
-                                                    <input type="text" class="form-control" id="edit-descripcion">
+                                                    <label for="edit-apellido"
+                                                        class="col-form-label focus">Apellido:</label>
+                                                    <input type="text" class="form-control" id="edit-apellido" name="edit-apellido">
                                                 </div>
-                                                <input type="hidden" id="edit-id">
+                                                <div class="mb-3">
+                                                    <label for="edit-correo" class="col-form-label focus">Correo:</label>
+                                                    <input type="text" class="form-control" id="edit-correo" name="edit-correo">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-telefono"
+                                                        class="col-form-label focus">Telefono:</label>
+                                                    <input type="number" class="form-control" id="edit-telefono" name="edit-telefono">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="edit-numcliente" class="col-form-label focus"># Cliente
+                                                        (SAP):</label>
+                                                    <input type="number" class="form-control" id="edit-numcliente" name="edit-numcliente">
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="edit-tipo-user" class="form-label focus">Tipo de
+                                                        usuario</label>
+                                                    <select class="form-select" name="edit-tipo-user" id="edit-tipo-user"
+                                                        aria-label="Default select example">
+                                                        <?php
+                                                        $query_type = "SELECT ID,NOMBRE FROM tipo_user";
+
+                                                        $resultado_type = $con->prepare($query_type);
+                                                        $resultado_type->execute();
+                                                        if ($resultado_type->rowCount() >= 1) {
+                                                            while ($row_type = $resultado_type->fetch(PDO::FETCH_ASSOC)) {
+                                                                ?>
+
+                                                                <option value="<?php echo $row_type['ID']; ?>">
+                                                                    <?php echo $row_type['NOMBRE']; ?>
+                                                                </option>
+
+                                                                <?php
+                                                            }
+                                                        } else {
+                                                            echo '<option>No hay ningun tipo de usuario registrado</option>';
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+
+                                                <input type="hidden" id="edit-id" name="edit-id">
                                                 <div class="d-grid">
                                                     <button type="submit" class="btn btn-success">Modificar</button>
                                                 </div>

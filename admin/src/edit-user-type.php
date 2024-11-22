@@ -3,19 +3,27 @@ session_start();
 if (isset($_SESSION['admin-us'])) {
     require('../../connection/conexion.php');
 
-    $nombre = (isset($_POST['nombre'])) ? $_POST['nombre'] : '';
-    $descripcion = (isset($_POST['descripcion'])) ? $_POST['descripcion'] : '';
-    $id = (isset($_POST['id'])) ? $_POST['id'] : '';
+    $nombre = (isset($_POST['edit-name'])) ? $_POST['edit-name'] : '';
+    $apellido = (isset($_POST['edit-apellido'])) ? $_POST['edit-apellido'] : '';
+    $correo = (isset($_POST['edit-correo'])) ? $_POST['edit-correo'] : '';
+    $telefono = (isset($_POST['edit-telefono'])) ? $_POST['edit-telefono'] : '';
+    $numcliente = (isset($_POST['edit-numcliente'])) ? $_POST['edit-numcliente'] : '';
+    $tipo_user = (isset($_POST['edit-tipo-user'])) ? $_POST['edit-tipo-user'] : '';
+    $id = (isset($_POST['edit-id'])) ? $_POST['edit-id'] : '';
 
-    function actualizarTipoUser($nombre, $descripcion, $id, $con)
+    function actualizarUser($nombre, $apellido, $correo, $telefono, $numcliente, $tipo_user, $id, $con)
     {
 
-        $consulta = "UPDATE tipo_user SET NOMBRE=:nombre, DESCRIPCION=:descripcion WHERE ID=:id";
+        $consulta = "UPDATE user SET NOMBRE=:nombre, APELLIDO=:apellido, CORREO=:correo, TELEFONO=:telefono, NUMERO_CLIENTE=:numcliente, ID_TIPO_USER=:tipouser WHERE ID=:id";
         $resultado = $con->prepare($consulta);
 
         // Asignamos los valores de los parámetros
         $resultado->bindParam(':nombre', $nombre, PDO::PARAM_STR);
-        $resultado->bindParam(':descripcion', $descripcion, PDO::PARAM_STR);
+        $resultado->bindParam(':apellido', $apellido, PDO::PARAM_STR);
+        $resultado->bindParam(':correo', $correo, PDO::PARAM_STR);
+        $resultado->bindParam(':telefono', $telefono, PDO::PARAM_STR);
+        $resultado->bindParam(':numcliente', $numcliente, PDO::PARAM_INT);
+        $resultado->bindParam(':tipouser', $tipo_user, PDO::PARAM_INT);
         $resultado->bindParam(':id', $id, PDO::PARAM_INT);
 
         // Ejecutamos la consulta
@@ -37,7 +45,7 @@ if (isset($_SESSION['admin-us'])) {
         ];
     }
 
-    $response = actualizarTipoUser($nombre, $descripcion, $id,   $con);
+    $response = actualizarUser($nombre, $apellido, $correo, $telefono, $numcliente, $tipo_user, $id, $con);
     print json_encode($response);
     $con=null;
 
