@@ -25,7 +25,7 @@
                             <a class="btn btn-primary" href="user.php">
                                 <i class="bi bi-person-fill"></i> Usuarios
                             </a>
-                            <a class="btn btn-primary" href="#">
+                            <a class="btn btn-primary" href="category.php">
                                 <i class="bi bi-tag-fill"></i> Categorias
                             </a>
                             <a class="btn btn-primary" href="#">
