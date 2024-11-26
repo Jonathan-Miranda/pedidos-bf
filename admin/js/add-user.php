@@ -51,7 +51,7 @@
         var id = $.trim($("#edit-id").val());
 
         $.ajax({
-            url: "src/edit-user-type.php",
+            url: "src/edit-user.php",
             type: "POST",
             dataType: "json",
             data: {
