@@ -28,7 +28,7 @@
                             <a class="btn btn-primary" href="category.php">
                                 <i class="bi bi-tag-fill"></i> Categorias
                             </a>
-                            <a class="btn btn-primary" href="#">
+                            <a class="btn btn-primary" href="products.php">
                                 <i class="bi bi-box-fill"></i> Productos
                             </a>
 
