@@ -1,37 +1,58 @@
 <?php
 session_start();
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 if (isset($_SESSION['admin-us'])) {
     require('../connection/conexion.php');
-    ?>
 
-    <!DOCTYPE html>
-    <html lang="es">
+    // Consulta para obtener los productos
+    $query = "SELECT * FROM product";
+    $resultado = $con->prepare($query);
+    $resultado->execute();
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>exportar | Brudifarma</title>
-        <?php
-        require('../src/component/bootstrap.php');
-        ?>
-    </head>
+    // Verificamos si hay productos en la base de datos
+    if ($resultado->rowCount() >= 1) {
+        // Crear un objeto de Spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
-    <body class="bg-dark">
-        <?php
-        require('src/navbar.php');
-        ?>
-        HOLA
-        <?php
-        require('../src/component/jquery-bootstrap.php');
-        ?>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        // Obtener los nombres de las columnas
+        $row = $resultado->fetch(PDO::FETCH_ASSOC); // Tomamos una fila para obtener las claves de las columnas
+        $titles = array_keys($row); // Títulos de las columnas
 
+        // Escribir los títulos de las columnas en la primera fila
+        $sheet->fromArray($titles, NULL, 'A1');
 
-    </body>
+        // Volver a la primera fila para leer todas las filas
+        $resultado->execute();
 
-    </html>
+        // Agregar los datos de la tabla
+        $row = 2; // Comenzamos en la fila 2 porque la 1 ya tiene los títulos
+        while ($product = $resultado->fetch(PDO::FETCH_ASSOC)) {
+            $sheet->fromArray($product, NULL, 'A' . $row);
+            $row++;
+        }
 
-    <?php
+        // Obtener la fecha actual en formato "dd-mm-yy"
+        $date = date("d-m-y");
+
+        // Especificar el nombre del archivo con la fecha dinámica
+        $fileName = "productos-catalogo-$date.xlsx";
+        // Especificar el nombre del archivo
+        
+        // Enviar las cabeceras necesarias para la descarga del archivo Excel
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment;filename=\"$fileName\"");
+        header('Cache-Control: max-age=0');
+        
+        // Escribir el archivo y enviarlo al navegador para que se descargue directamente
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+    } else {
+        echo "No hay productos para exportar.";
+    }
+
 } else {
     header("Location: index.php");
     exit();

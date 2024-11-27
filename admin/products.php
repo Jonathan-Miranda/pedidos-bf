@@ -51,7 +51,7 @@ if (isset($_SESSION['admin-us'])) {
                             <i class="bi bi-three-dots-vertical"></i>Más acciones
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-arrow-down"></i> Exportar
+                            <li><a class="dropdown-item" href="export-products.php"><i class="bi bi-file-earmark-arrow-down"></i> Exportar
                                     productos</a></li>
                             <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square"></i> Multiples
                                     productos</a></li>
