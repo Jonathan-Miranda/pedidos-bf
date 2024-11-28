@@ -2,6 +2,21 @@
 session_start();
 if (isset($_SESSION['admin-us'])) {
     require('../connection/conexion.php');
+
+    // Inicializar la variable de búsqueda de manera predeterminada
+    $busqueda = '';
+
+    // Verificar si el parámetro de búsqueda está presente en la URL
+    if (isset($_GET['buscar'])) {
+        $busqueda = $_GET['buscar'];
+    }
+
+    // Número de productos por página
+    $productos_por_pagina = 100;
+
+    // Obtener el número de página actual
+    $pagina_actual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+    $offset = ($pagina_actual - 1) * $productos_por_pagina;
     ?>
 
     <!DOCTYPE html>
@@ -31,8 +46,11 @@ if (isset($_SESSION['admin-us'])) {
                 <div class="col-md-6 my-3">
                     <!-- buscador -->
                     <div class="input-group">
-                        <button class="btn btn-primary" type="button"><i class="bi bi-search"></i></button>
-                        <input type="search" class="form-control" placeholder="Buscar..." id="buscar">
+                        <form method="get" class="d-flex">
+                            <input type="search" class="form-control" placeholder="Buscar..." id="buscar" name="buscar"
+                                value="<?php echo htmlspecialchars($busqueda); ?>">
+                            <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                        </form>
                     </div>
                     <!-- fin buscador -->
                 </div>
@@ -51,7 +69,8 @@ if (isset($_SESSION['admin-us'])) {
                             <i class="bi bi-three-dots-vertical"></i>Más acciones
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="export-products.php"><i class="bi bi-file-earmark-arrow-down"></i> Exportar
+                            <li><a class="dropdown-item" href="export-products.php"><i
+                                        class="bi bi-file-earmark-arrow-down"></i> Exportar
                                     productos</a></li>
                             <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-square"></i> Multiples
                                     productos</a></li>
@@ -61,6 +80,29 @@ if (isset($_SESSION['admin-us'])) {
                     </div>
                 </div>
 
+                <!-- Preview -->
+                <?php
+                //al no usar elementos dinamicos (where, order by) esta consulta es segura y no es vulnerable a inyecciones sql
+                $query = "SELECT * FROM product WHERE NOMBRE LIKE :busqueda OR SKU LIKE :busqueda LIMIT :limit OFFSET :offset";
+
+                $resultado = $con->prepare($query);
+
+                // Establecer parámetros de búsqueda y paginación
+                $resultado->bindValue(':busqueda', '%' . $busqueda . '%', PDO::PARAM_STR);
+                $resultado->bindValue(':limit', $productos_por_pagina, PDO::PARAM_INT);
+                $resultado->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+                $resultado->execute();
+
+                // Contar total de productos para generar las páginas
+                $query_total = "SELECT COUNT(*) FROM product WHERE NOMBRE LIKE :busqueda OR SKU LIKE :busqueda";
+                $stmt_total = $con->prepare($query_total);
+                $stmt_total->bindValue(':busqueda', '%' . $busqueda . '%', PDO::PARAM_STR);
+                $stmt_total->execute();
+                $total_productos = $stmt_total->fetchColumn();
+                $total_paginas = ceil($total_productos / $productos_por_pagina);
+
+                ?>
                 <div class="col-md-12 table-responsive ">
 
                     <table class="table table-dark table-striped align-middle">
@@ -77,14 +119,7 @@ if (isset($_SESSION['admin-us'])) {
                             </tr>
                         </thead>
                         <tbody>
-
-                            <!-- Preview -->
                             <?php
-                            //al no usar elementos dinamicos (where, order by) esta consulta es segura y no es vulnerable a inyecciones sql
-                            $query = "SELECT * FROM product";
-
-                            $resultado = $con->prepare($query);
-                            $resultado->execute();
                             if ($resultado->rowCount() >= 1) {
                                 while ($row = $resultado->fetch(PDO::FETCH_ASSOC)) {
                                     ?>
@@ -94,7 +129,9 @@ if (isset($_SESSION['admin-us'])) {
                                         <td><?php echo $row['SUSTANCIA']; ?></td>
                                         <td><?php echo $row['STOCK']; ?></td>
                                         <td>
-                                            <a href="<?php echo $row['IMAGEN_URL']; ?>" target="_blank" class="btn btn-primary"><i class="bi bi-image"></i></a></td>
+                                            <a href="<?php echo $row['IMAGEN_URL']; ?>" target="_blank" class="btn btn-primary"><i
+                                                    class="bi bi-image"></i></a>
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-success">
                                                 <i class="bi bi-eye"></i>
@@ -127,43 +164,27 @@ if (isset($_SESSION['admin-us'])) {
                             ?>
                             <!-- End preview -->
 
-                            <!-- Modal-edit -->
-                            <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="edit-category"
-                                tabindex="-1" aria-labelledby="edit-categoryLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <p class="modal-title fs-3 focus" id="edit-categoryLabel">Editar</p>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-
-                                        <div class="modal-body">
-                                            <form id="frm-edit-category" method="POST" enctype="multipart/form-data"
-                                                accept-charset="utf-8">
-                                                <div class="mb-3">
-                                                    <label for="edit-name" class="col-form-label focus">Nombre:</label>
-                                                    <input type="text" class="form-control" id="edit-name" name="edit-name">
-                                                </div>
-
-                                                <input type="hidden" id="edit-id" name="edit-id">
-                                                <div class="d-grid">
-                                                    <button type="submit" class="btn btn-success">Modificar</button>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- END Modal-edit -->
-
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
         <!-- Fin registros -->
+
+        <!-- Paginación -->
+        <div class="col-md-12">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                        <li class="page-item <?php echo ($i == $pagina_actual) ? 'active' : ''; ?>">
+                            <a class="page-link"
+                                href="?pagina=<?php echo $i; ?>&buscar=<?php echo urlencode($busqueda); ?>"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
+            </nav>
+        </div>
+        <!-- END Paginación -->
 
         <?php
         require('../src/component/jquery-bootstrap.php');
