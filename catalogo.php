@@ -2,6 +2,21 @@
 session_start();
 if (isset($_SESSION['s_usuario'])) {
     require('connection/conexion.php');
+
+    // Inicializar la variable de búsqueda de manera predeterminada
+    $busqueda = '';
+
+    // Verificar si el parámetro de búsqueda está presente en la URL
+    if (isset($_GET['buscar'])) {
+        $busqueda = $_GET['buscar'];
+    }
+
+    // Número de productos por página
+    $productos_por_pagina = 20;
+
+    // Obtener el número de página actual
+    $pagina_actual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+    $offset = ($pagina_actual - 1) * $productos_por_pagina;
     ?>
     <!DOCTYPE html>
     <html lang="es">
