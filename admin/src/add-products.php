@@ -19,10 +19,27 @@ if (isset($_SESSION['admin-us'])) {
     <body class="bg-dark">
 
         <div class="container mt-3">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <a href="../products.php"><i class="bi bi-arrow-left"></i> Regresar</a>
+            <div class="row mb-3">
+                <div class="col-md-4 text-center">
+                    <a href="../products.php" class="btn btn-primary"><i class="bi bi-arrow-left"></i> Regresar</a>
+                </div>
+                <div class="col-md-4 text-center">
                     <h2 class="text-white">Agregar producto</h2>
+                </div>
+                <div class="col-md-4 text-center border border-warning">
+
+                    <form id="excel" method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+                        <label class="col-form-label focus text-white" for="file"><i class="bi bi-boxes"></i> Subir
+                            multiples
+                            archivos</label>
+                        <input type="file" class="form-control mb-3" id="file" name="file"
+                            accept=".xls,.xlsx,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                            required>
+                        <div class="d-grid">
+                            <input type="submit" id="btn-excel" value="SUBIR" class="btn btn-success">
+                        </div>
+                    </form>
+
                 </div>
             </div>
 
@@ -146,7 +163,7 @@ if (isset($_SESSION['admin-us'])) {
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
-            // add-user
+            // add-product-one
             $('#frm-add-prod').submit(function (e) {
                 e.preventDefault();
                 var btn = $('#btn');
@@ -197,7 +214,60 @@ if (isset($_SESSION['admin-us'])) {
                     }
                 });
             });
-            // FIN add user
+            // FIN add-product-one
+
+            // add-product-more
+            $('#excel').submit(function (e) {
+                e.preventDefault();
+                var btn2 = $('#btn-excel');
+                var formData = new FormData(this); // Crea un nuevo objeto FormData con los datos del formulario
+                for (var pair of formData.entries()) {
+                    console.log(pair[0] + ': ' + pair[1]);
+                }
+                btn2.val('Subiendo productos espera...');
+                btn2.prop('disabled', true);
+                $.ajax({
+                    url: "add-more-product.php",
+                    type: "POST",
+                    data: formData,
+                    processData: false, // Importante para que jQuery no intente procesar el FormData
+                    contentType: false,  // Importante para que jQuery no configure un tipo de contenido automático
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status) {
+                            btn2.val('SUBIR');
+                            btn2.prop('disabled', false);
+                            Swal.fire({
+                                icon: response.icon,
+                                title: response.msj,
+                            }).then(() => {
+                                window.location.href = "add-products.php";
+                            });
+
+                        } else {
+                            btn2.val('SUBIR');
+                            btn2.prop('disabled', false);
+                            Swal.fire({
+                                icon: response.icon,
+                                title: response.msj,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Función que se ejecuta si ocurre un error
+                        btn2.val('SUBIR');
+                        btn2.prop('disabled', false);
+                        Swal.fire({
+                            icon: 'error', // Tipo de alerta (error)
+                            title: 'Error',
+                            text: 'Ocurrió un error',
+                            footer: 'Detalles del error: ' + xhr.responseText, // Aquí mostramos los detalles del error
+                            confirmButtonText: 'Cerrar'
+                        });
+                    }
+                });
+            });
+            // FIN add-product-more
         </script>
 
     </body>
