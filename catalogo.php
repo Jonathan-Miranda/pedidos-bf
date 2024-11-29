@@ -63,6 +63,7 @@ if (isset($_SESSION['s_usuario'])) {
         <?php
         require('src/component/jquery-bootstrap.php');
         ?>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
         <?php
