@@ -80,12 +80,14 @@
                   <p><?php echo $row_prod['DESCRIPCION']; ?></p>
                   <span class="fw-light">SKU: <?php echo $row_prod['SKU']; ?></span>
                 </div>
-  
-  
+
+
                 <div class="z-3 position-absolute top-0 start-0 m-4">
-                  <a class="btn rounded-circle btn-danger text-center" href="#">
+
+                  <a class="btn rounded-circle btn-danger text-center toggle-wishlist" href="#" data-product-id="<?php echo $row_prod['ID']; ?>">
                     <i class="bi bi-heart"></i>
                   </a>
+
                 </div>
               </div>
 
