@@ -8,14 +8,14 @@ if (isset($_SESSION['s_usuario'])) {
 
     // Verificar si el parámetro de búsqueda está presente en la URL
     if (isset($_GET['buscar'])) {
-        $busqueda = $_GET['buscar'];
+        $busqueda = trim($_GET['buscar']);
     }
 
     // Número de productos por página
     $productos_por_pagina = 20;
 
     // Obtener el número de página actual
-    $pagina_actual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+    $pagina_actual = isset($_GET['pagina']) ? max((int)$_GET['pagina'], 1) : 1; // Asegurarse de que sea un número válido
     $offset = ($pagina_actual - 1) * $productos_por_pagina;
     ?>
     <!DOCTYPE html>
@@ -42,9 +42,15 @@ if (isset($_SESSION['s_usuario'])) {
         <?php
         require('src/component/like-offcanvas.php');
         ?>
-
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 my-3">
+                    <p class="focus fs-1">Mis Favoritos ❤️</p>
+                </div>
+            </div>
+        </div>
         <?php
-        require('src/component/products.php');
+        require('src/component/products-like.php');
         ?>
 
         <?php
@@ -52,7 +58,7 @@ if (isset($_SESSION['s_usuario'])) {
         ?>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <?php
-        require('js/swiper-carrousel-home.php');
+        require('js/like.php');
         ?>
 
     </body>
