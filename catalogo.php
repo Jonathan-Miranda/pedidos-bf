@@ -70,6 +70,10 @@ if (isset($_SESSION['s_usuario'])) {
         require('js/swiper-carrousel-home.php');
         ?>
 
+        <?php
+        require('js/like.php');
+        ?>
+
     </body>
 
     </html>
