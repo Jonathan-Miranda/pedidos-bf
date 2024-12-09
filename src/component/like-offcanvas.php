@@ -53,7 +53,7 @@ $base_url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" 
             ?>
             <div class="d-grid">
 
-                <a class="btn d-block rounded-pill bk icon-link icon-link-hover" href="#">
+                <a class="btn d-block rounded-pill bk icon-link icon-link-hover" href="favoritos.php">
                     Ver todos
                     <svg fill="currentColor" class="bi bi-arrow-right-short fs-4" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"

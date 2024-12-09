@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row">
         <p class="fs-1 focus mt-3">Mis favoritos ❤️
-            <a class="btn rounded-pill bk icon-link icon-link-hover" href="#">
+            <a class="btn rounded-pill bk icon-link icon-link-hover" href="favoritos.php">
                 Ver todos
                 <svg fill="currentColor" class="bi bi-arrow-right-short fs-4" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
