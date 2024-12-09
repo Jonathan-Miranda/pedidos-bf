@@ -1,6 +1,6 @@
 <nav class="navbar sticky-top navbar-expand-md bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="catalogo.php">
             <img class="img-fluid d-block m-auto logo-menu"
                 src="https://brudifarma.com.mx/wp-content/uploads/2022/06/logoBrudi.png" alt="Brudifarma">
         </a>
@@ -12,7 +12,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        <p class="focus my-2">¡Hola👋! <?php echo $_SESSION['s_usuario'] . "-" . $_SESSION['id']; ?></p>
+                        <p class="focus my-2">¡Hola👋! <?php echo $_SESSION['s_usuario']; ?></p>
                     </div>
 
                     <div class="col-md-6">
