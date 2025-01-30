@@ -15,7 +15,7 @@ if (isset($_SESSION['s_usuario'])) {
     $productos_por_pagina = 20;
 
     // Obtener el número de página actual
-    $pagina_actual = isset($_GET['pagina']) ? max((int)$_GET['pagina'], 1) : 1; // Asegurarse de que sea un número válido
+    $pagina_actual = isset($_GET['pagina']) ? max((int) $_GET['pagina'], 1) : 1; // Asegurarse de que sea un número válido
     $offset = ($pagina_actual - 1) * $productos_por_pagina;
     ?>
     <!DOCTYPE html>
@@ -47,11 +47,11 @@ if (isset($_SESSION['s_usuario'])) {
                 <div class="col-md-12 my-3">
                     <p class="focus fs-1">Mis Favoritos ❤️</p>
                 </div>
+                <?php
+                require('src/component/products-like.php');
+                ?>
             </div>
         </div>
-        <?php
-        require('src/component/products-like.php');
-        ?>
 
         <?php
         require('src/component/jquery-bootstrap.php');
