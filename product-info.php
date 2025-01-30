@@ -1,7 +1,7 @@
 <?php
 session_start();
-$_GET['id_product'] = 3945;
 if (isset($_SESSION['s_usuario']) && isset($_GET['id_product'])) {
+
     require('connection/conexion.php');
 
     // Inicializar la variable de búsqueda de manera predeterminada
@@ -55,11 +55,11 @@ if (isset($_SESSION['s_usuario']) && isset($_GET['id_product'])) {
         pr.OFERTA
     FROM 
         product p
-    JOIN 
+    LEFT JOIN 
         product_category pc ON p.ID = pc.ID_PRODUCT
-    JOIN 
+    LEFT JOIN 
         category c ON pc.ID_CATEGORY = c.ID
-    JOIN 
+    LEFT JOIN 
         precio_product pr ON p.ID = pr.ID_PRODUCT
     WHERE 
         p.ID =:id_prod";
@@ -122,6 +122,18 @@ if (isset($_SESSION['s_usuario']) && isset($_GET['id_product'])) {
 
                     <?php
             }
+        } else {
+            ?>
+                <div class="container mt-3">
+                    <div class="row">
+                        <div class="col-lg-10 offset-lg-1">
+                            <div class="alert alert-danger fs-5" role="alert">
+                                Producto no encontrado
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php
         }
         ?>
 
@@ -134,7 +146,7 @@ if (isset($_SESSION['s_usuario']) && isset($_GET['id_product'])) {
         p.IMAGEN_URL 
     FROM 
         product p
-    JOIN 
+    LEFT JOIN 
         product_category pc ON p.ID = pc.ID_PRODUCT
     WHERE 
         pc.ID_CATEGORY = (
