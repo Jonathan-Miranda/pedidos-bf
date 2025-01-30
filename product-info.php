@@ -108,13 +108,13 @@ if (isset($_SESSION['s_usuario']) && isset($_GET['id_product'])) {
                             </ul>
 
                             <div class="input-group">
-                                <button class="btn bk" type="button" id="button-addon1"><i class="bi bi-dash"></i></button>
-                                <input type="number" class="form-control" id="inputGroupFile04" max="5">
-                                <button class="btn bk" type="button" id="inputGroupFileAddon04"><i class="bi bi-plus"></i></button>
+                                <button class="btn bk" type="button" id="menos"><i class="bi bi-dash"></i></button>
+                                <input type="number" class="form-control" id="agregar" max="<?php echo $row_p['STOCK']; ?>" min="1">
+                                <button class="btn bk" type="button" id="mas"><i class="bi bi-plus"></i></button>
                             </div>
 
                             <div class="d-grid  mt-3 gap-2">
-                                <button class="btn btn-purple" type="button">Agregar</button>
+                                <button class="btn btn-purple" type="button" id="btn-add">Agregar</button>
                             </div>
 
                         </div>
@@ -218,6 +218,10 @@ if (isset($_SESSION['s_usuario']) && isset($_GET['id_product'])) {
 
         <?php
         require('js/like.php');
+        ?>
+
+        <?php
+        require('js/product-info.php');
         ?>
 
     </body>
