@@ -12,7 +12,7 @@ if (isset($_SESSION['s_usuario'])) {
     {
         $consulta = "SELECT ID FROM cesta WHERE ID_USER = :user_id AND ESTADO = :state";
         $pdo = $con->prepare($consulta);
-        $state= 0;
+        $state = 0;
 
         $pdo->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $pdo->bindParam(':state', $state, PDO::PARAM_INT);
@@ -30,7 +30,7 @@ if (isset($_SESSION['s_usuario'])) {
     }
     // END funcion Verificar user tiene car activo
 
-    // funcion elimiar si existe
+    // funcion actualizar si existe
     function add_to_car($res_car_active, $product_id, $cantidad, $con)
     {
         $consulta = "SELECT CANTIDAD FROM car WHERE ID_CESTA = :id_cesta AND ID_PRODUCT = :product_id";
@@ -89,9 +89,9 @@ if (isset($_SESSION['s_usuario'])) {
             'status' => $status
         ];
     }
-    // END funcion elimiar si existe
+    // END funcion actualizar si existe
 
-    // funcion elimiar si existe
+    // funcion crear cesta
     function create_car($user_id, $con)
     {
         $consulta = "INSERT INTO cesta (ID_USER, ESTADO) VALUES (:user_id, :state)";
@@ -110,7 +110,50 @@ if (isset($_SESSION['s_usuario'])) {
 
         return $status;
     }
-    // END funcion elimiar si existe
+    // END funcion crear cesta
+
+    //Funcion modificar stock
+
+    function stock($product_id, $cantidad, $con)
+    {
+
+        $consulta = "SELECT STOCK FROM product WHERE ID = :product_id";
+        $pdo = $con->prepare($consulta);
+        $pdo->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+        $pdo->execute();
+
+        if ($pdo->rowCount() > 0) {
+            $row = $pdo->fetch(PDO::FETCH_ASSOC);
+            $cantidad_actual = $row['STOCK'];
+
+            if ($cantidad > $cantidad_actual) {
+                $status = false;
+            } else {
+
+                $nueva_cantidad = $cantidad_actual - $cantidad;
+
+                // Actualizar la cantidad en la base de datos
+                $consulta_update = "UPDATE product SET STOCK = :nueva_cantidad WHERE ID = :product_id";
+                $pdo = $con->prepare($consulta_update);
+                $pdo->bindParam(':nueva_cantidad', $nueva_cantidad, PDO::PARAM_INT);
+                $pdo->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+
+                if ($pdo->execute()) {
+                    $status = true;
+                } else {
+                    $status = false;
+                }
+            }
+
+
+        } else {
+            $status = false;
+        }
+
+        return $status;
+    }
+
+    //END funcion modificar stock
 
 
     // -------------- Main function --------------
@@ -119,13 +162,32 @@ if (isset($_SESSION['s_usuario'])) {
         $res_car_active = exist_car($user_id, $con);
 
         if ($res_car_active) {
-            $response = add_to_car($res_car_active, $product_id, $cantidad, $con);
+            $res_stock = stock($product_id, $cantidad, $con);
+            if ($res_stock) {
+                $response = add_to_car($res_car_active, $product_id, $cantidad, $con);
+            } else {
+                $response = [
+                    'icon' => 'error',
+                    'msj' => 'Problemas con el stock',
+                    'status' => false,
+                ];
+            }
         } else {
             $res_car_active = create_car($user_id, $con);  // Aquí actualizas $res_car_active con el nuevo ID de la cesta
 
             if ($res_car_active) {
-                // Después de crear la cesta, ahora agrega el producto
-                $response = add_to_car($res_car_active, $product_id, $cantidad, $con);
+
+                $res_stock = stock($product_id, $cantidad, $con);
+                if ($res_stock) {
+                    $response = add_to_car($res_car_active, $product_id, $cantidad, $con);
+                } else {
+                    $response = [
+                        'icon' => 'error',
+                        'msj' => 'Problemas con el stock',
+                        'status' => false,
+                    ];
+                }
+
             } else {
                 // Si no se pudo crear la cesta, retorna un error
                 $response = [
